@@ -10,7 +10,6 @@ public class Main {
             texts[i] = generateText("aab", 30_000);
         }
         List<Thread> threads = new ArrayList<>();
-
         for (String text : texts) {
             Thread thread = new Thread(() -> {
                 int maxSize = 0;
@@ -30,18 +29,18 @@ public class Main {
                             maxSize = j - i;
                         }
                     }
-                    System.out.println(" MT: " + text.substring(0, 100) + " -> " + maxSize);
                 }
+                System.out.println(text.substring(0, 100) + " -> " + maxSize);
             });
             threads.add(thread);
-            thread.start();
         }
-
         for (Thread thread : threads) {
-            thread.join(); // зависаем, ждём когда поток объект которого лежит в thread завершится
+            thread.start();
+            thread.join();
         }
         long endTsWithMultithreading = System.currentTimeMillis(); // end time
         System.out.println("Time: " + (endTsWithMultithreading - startTsWithMultithreading) + "ms\n");
+
 
         long startTs = System.currentTimeMillis(); // start time
         for (String text : texts) {
@@ -66,7 +65,6 @@ public class Main {
             System.out.println(text.substring(0, 100) + " -> " + maxSize);
         }
         long endTs = System.currentTimeMillis(); // end time
-
         System.out.println("Time: " + (endTs - startTs) + "ms");
     }
 
